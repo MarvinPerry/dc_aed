@@ -1,6 +1,8 @@
 import urllib2
 import json
 import psycopg2
+from flask import Flask, render_template, request
+from flask.ext.sqlalchemy import SQLAlchemy
 from pw import dbpass
 
 
@@ -22,11 +24,11 @@ except:
 cur = conn.cursor()
 
 #just here for development purposes. To be removed later
-try:
-    cur.execute("DROP TABLE IF EXISTS AED")
-    conn.commit()
-except:
-	pass
+# try:
+#     cur.execute("DROP TABLE IF EXISTS DEFIBS")
+#     conn.commit()
+# except:
+# 	pass
 
 
 while ident != 0:
@@ -55,10 +57,10 @@ while ident != 0:
 
 
 	try:
-		cur. execute("""CREATE TABLE IF NOT EXISTS AED(id INTEGER PRIMARY KEY NOT NULL,  acquired BIGINT, facility TEXT NOT NULL, location TEXT, brand TEXT, model TEXT, model_num TEXT, x_coord DOUBLE PRECISION, y_coord DOUBLE PRECISION, expires DATE, replaced TEXT);""")
-		conn.commit()
+		# cur. execute("""CREATE TABLE IF NOT EXISTS DEFIBS(ident INTEGER PRIMARY KEY NOT NULL,  acquired BIGINT, facility TEXT NOT NULL, location TEXT, brand TEXT, aed_model TEXT, aed_model_num TEXT, x_coord NUMERIC, y_coord NUMERIC, expires TEXT, replaced TEXT);""")
+		# conn.commit()
 
-		cur.execute("INSERT INTO AED(id, acquired, facility, location, brand, model, model_num, x_coord, y_coord, expires, replaced)\
+		cur.execute("INSERT INTO DEFIBS(ident, acquired, facility, location, brand, aed_model, aed_model_num, x_cord, y_cord, expires, replaced)\
 				VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", (colm['ident'] , colm['acquired'], colm['facility'], colm['location'], colm['brand'], colm['model'], colm['model_num'], colm['x_coord'], colm['y_coord'], colm['expires'], colm['replaced']))
 		conn.commit()
 
