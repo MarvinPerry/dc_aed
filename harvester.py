@@ -1,6 +1,7 @@
 import urllib2
 import json
 import psycopg2
+from pw import dbpass
 
 
 # ident is the first item in the AED dataset 
@@ -8,11 +9,11 @@ ident = 1
 #a variable representing the url pointing to the datast
 aedObj = 'http://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Health_WebMercator/MapServer/9/'+str(ident)+'?f=pjson'
 aed = json.load(urllib2.urlopen(aedObj))
-schema ={}
+colm ={}
 
 #tries to create the connection to the database, and prints failure message if necessarry
 try:
-    conn = psycopg2.connect(database='AED', user='postgres', password='*****', host='127.0.0.1', port='5432')
+    conn = psycopg2.connect(database='AED', user='postgres', password=dbpass, host='127.0.0.1', port='5432')
     
 except:
     print "Database connection failed."
@@ -33,17 +34,17 @@ while ident != 0:
 	aed = json.load(urllib2.urlopen(aedObj))
 
 	try:
-		schema['ident'] = aed['feature']['attributes']['OBJECTID']
-		schema['acquired'] = aed['feature']['attributes']['DATE']
-		schema['facility'] = aed['feature']['attributes']['FACILITY_NAME']
-		schema['location'] = aed['feature']['attributes']['LOCATION']
-		schema['x_coord'] = aed['feature']['attributes']['XCOORD']
-		schema['y_coord'] = aed['feature']['attributes']['YCOORD']
-		schema['expires'] = aed['feature']['attributes']['PADS_EXPIRATION_DATE']
-		schema['replaced'] = aed['feature']['attributes']['REPLACED']
-		schema['brand'] = aed['feature']['attributes']['AED_BRAND_MANUFACTURER']
-		schema['model'] = aed['feature']['attributes']['AED_BRAND_TEXT']
-		schema['model_num'] = aed['feature']['attributes']['MODEL_NUMBER']
+		colm['ident'] = aed['feature']['attributes']['OBJECTID']
+		colm['acquired'] = aed['feature']['attributes']['DATE']
+		colm['facility'] = aed['feature']['attributes']['FACILITY_NAME']
+		colm['location'] = aed['feature']['attributes']['LOCATION']
+		colm['x_coord'] = aed['feature']['attributes']['XCOORD']
+		colm['y_coord'] = aed['feature']['attributes']['YCOORD']
+		colm['expires'] = aed['feature']['attributes']['PADS_EXPIRATION_DATE']
+		colm['replaced'] = aed['feature']['attributes']['REPLACED']
+		colm['brand'] = aed['feature']['attributes']['AED_BRAND_MANUFACTURER']
+		colm['model'] = aed['feature']['attributes']['AED_BRAND_TEXT']
+		colm['model_num'] = aed['feature']['attributes']['MODEL_NUMBER']
 
 		ident = ident + 1
 		
@@ -58,7 +59,7 @@ while ident != 0:
 		conn.commit()
 
 		cur.execute("INSERT INTO AED(id, acquired, facility, location, brand, model, model_num, x_coord, y_coord, expires, replaced)\
-				VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", (schema['ident'] , schema['acquired'], schema['facility'], schema['location'], schema['brand'], schema['model'], schema['model_num'], schema['x_coord'], schema['y_coord'], schema['expires'], schema['replaced']))
+				VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", (colm['ident'] , colm['acquired'], colm['facility'], colm['location'], colm['brand'], colm['model'], colm['model_num'], colm['x_coord'], colm['y_coord'], colm['expires'], colm['replaced']))
 		conn.commit()
 
 	except Exception as E:
