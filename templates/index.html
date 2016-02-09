@@ -2,18 +2,27 @@
 <html>
 <link rel="stylesheet" type="text/css" href="static/style.css">
 
-    <h2><center>Automactic Electronic Defibrilators in Washington D.C. </center></h2>
+    <h2><center>Automactic External Defibrilators in Washington D.C. </center></h2>
 
     
 
     <table border ="1">
    
         <th>id</th>
+        <th>Date Acquired</th>
         <th>Facility</th>
         <th>Location</th>
+        <th>Brand</th>
+        <th>Model</th>
+        <th>Model #</th>
+        <th>X-Coordinates</th>
+        <th>Y-Coordinates</th>
+        <th> Expiration Date</th>
          {% for item in aeds %}
             <tr>
-                <td>{{item.ident}}</td> <td>{{item.facility}}</td> <td>{{item.location}}</td> 
+                <td>{{item.ident}}</td><td>{{item.acquired}}</td> <td>{{item.facility}}</td> <td>{{item.location}}</td> <td>{{item.brand}}</td>
+                <td>{{item.aed_model}}</td><td>{{item.aed_model_num}}</td><td>{{item.lng}}</td><td>{{item.lat}}</td><td>{{item.expires}}</td>
+
             </tr>
          {% endfor %}
     </table>
