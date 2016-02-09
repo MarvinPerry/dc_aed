@@ -1,7 +1,20 @@
-<!!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" type="text/css" href="css/style.css">
 
-<h2><center>Automactic Electronic Defibrilators in Washington D.C. </center></h2>
+    <h2><center>Automactic Electronic Defibrilators in Washington D.C. </center></h2>
 
-{% for item in aeds %}
-<li> {{item.facility}} </li>
-{% endfor %}
+    {% for item in aeds %}
+
+    <table border ="1">
+        <th>id</th>
+        <th>Facility</th>
+        <th>Location</th>
+    <tr>
+        <td>{{item.ident}}</td> <td>{{item.facility}}</td> <td>{{item.location}}</td> 
+    </tr>
+    </table>
+
+    {% endfor %}
+
+</html>

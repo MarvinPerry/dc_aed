@@ -31,7 +31,7 @@ cur = conn.cursor()
 # 	pass
 
 
-while ident != 0:
+while ident != 0: #consider making this None/null instead of zero
 	aedObj = 'http://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Health_WebMercator/MapServer/9/'+str(ident)+'?f=pjson'
 	aed = json.load(urllib2.urlopen(aedObj))
 
