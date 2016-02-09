@@ -76,19 +76,16 @@ def get_id():
     
     if request.method == 'GET':
         print "got here 1"
-        # cur.execute("SELECT * FROM defibs WHERE ident  = 1") 
-        # usrAed = cur.fetchall()
         return render_template('get_id.html')
 
     
     if request.method == 'POST':
         print "got here 2"
 
-        SQL = "SELECT * FROM defibs WHERE ident <=(%s) "
+        SQL = "SELECT * FROM defibs WHERE ident =(%s) "
         data = (request.form['num'],)
         cur.execute(SQL, data)
         usrAed = cur.fetchall()
-    # usrAed = Defibs.query.filter(Defibs.ident == 100)
         return render_template('get_id.html', usrAed = usrAed)
 
 
@@ -101,12 +98,18 @@ def get_id():
 
 @app.route('/query', methods = ['GET', 'POST'])
 def query():
-
-     if request.method == 'POST':
+    if request.method == 'GET':
         print "got here 3"
-        cur.execute("SELECT * FROM defibs WHERE ident = 1 ")
+        return render_template('query.html')
+
+    if request.method == 'POST':
+        print "got here 4"
+
+        SQL = "SELECT * FROM defibs WHERE ident <=(%s) "
+        data = (request.form['num'],)
+        cur.execute(SQL, data)
         usrAed = cur.fetchall()
-        return render_template('query.html', usrAed=usrAed)
+        return render_template('query.html', usrAed = usrAed)
 
 
 
