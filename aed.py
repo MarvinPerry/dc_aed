@@ -2,6 +2,9 @@ from flask import Flask, render_template, request
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from pw import ALC, dbpass
+import pdb
+#### Begining trace here #####
+# pdb.set_trace()
 
 
 
@@ -45,46 +48,94 @@ class Defibs(db.Model):
     replaced = db.Column(db.Text)
 
 
+
+
+
 # index page that currently shows a record of every AED in the table
 @aed.route('/')
 def index():
     aeds = Defibs.query.all()
     return render_template('index.html', aeds = aeds)
+#########################################################################################
 
 
 # the page for users searching for one specific aed by id
-@aed.route('/get_id', methods =['GET', 'POST'])
-def get_id():
-    
-    if request.method == 'GET':
+@aed.route('/aed_id/')
+@aed.route('/get_id/', methods=['GET', 'POST'])
+@aed.route('/get_id/<int:num>', methods=['GET', 'POST'])
+
+def get_id(num=None):
+    if request.method == 'GET' and num == None:
         
+        print "testing here 0"
         return render_template('get_id.html')
 
-    
-    if request.method == 'POST':
-        print "got here 2"
+    elif request.method == 'POST':
+        print "testing here 1"
+        num=request.form['num']
+        # pdb.set_trace()
 
-        SQL = "SELECT * FROM defibs WHERE ident =(%s) "
-       
-        if str(request.form['num']).isdigit() == True:
-            data = (request.form['num'],)
-        else:
-            data = (1,)
-
+        data = (request.form['num'],)
+        SQL = "SELECT * FROM defibs WHERE ident =(%s)"   
         cur.execute(SQL, data)
         usrAed = cur.fetchall()
-        return render_template('get_id.html', usrAed = usrAed)
+        # passing in num and usrAed to the singular aed page
+        return render_template('get_id.html', num=num, usrAed=usrAed)
+
+    else:
+        print "testing here 2"
+        return render_template('get_id.html')
+
+
+#########################################################################################
+
+# @aed.route('/aed_id/')
+# def show_id():
+#     return render_template('aed_id.html')
+  
         
+#########################################################################################
 
 
 #the page for users searching for a range of aeds, from 1 to the user entered number
+
+
+
+@aed.route('/by_facility', methods= ['GET', 'POST'])
+def by_facility():
+    if request.method =='GET':
+
+        cur.execute("SELECT DISTINCT facility FROM defibs ORDER BY facility")
+        print "after swl request"
+        distFacil = cur.fetchall()
+        return render_template('by_facility.html', distFacil=distFacil)
+    
+
+    if request.method == 'POST':
+        try:
+            soloFacil = request.form['Facility']
+            print soloFacil
+        except Exception as E:
+            print str(E)
+        
+        
+        return render_template('by_facility.html', soloFacil=soloFacil)
+
+
+#########################################################################################
+
+
 @aed.route('/query', methods = ['GET', 'POST'])
 def query():
     if request.method == 'GET':
+        try:
+            print request.form['Facility']
+        except Exception as E:
+            print str(E)
         return render_template('query.html')
 
+
     if request.method == 'POST':
-        print "got here 4"
 
         SQL = "SELECT * FROM defibs WHERE ident <=(%s) "
 
@@ -94,7 +145,29 @@ def query():
             data = (1,)
         cur.execute(SQL, data)
         usrAed = cur.fetchall()
-        return render_template('query.html', usrAed = usrAed)
+        return render_template('query.html', usrAed=usrAed)
+
+
+
+#########################################################################################
+
+@aed.route('/queryrange', methods =['GET', 'POST'])
+def queryrange():
+    if request.method == 'GET':
+    
+        return render_template('queryrange.html')
+
+    if request.method=='POST':
+
+        if request.method =='POST':
+
+            if int(request.form['endYr']) != None and int(request.form['startYr']) != None:
+                endYr = int(request.form['endYr']) 
+                startYr = int(request.form['startYr'])
+
+                cur.execute("SELECT * from defibs WHERE DATE BETWEEN startYr and endYr ")
+                rangAed = cur.fetchall()
+        return render_template('queryrange.html', rangAed=rangAed)
 
 
 

@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet" type="text/css" href="static/style.css">
-
+    <head>
+        <link rel="stylesheet" type="text/css" href="static/style.css">
+        <meta charset="utf-8"/>
+    </head>
     <h2><center>Automactic External Defibrilators in Washington D.C. </center></h2>
 
     
@@ -26,6 +28,13 @@
             </tr>
          {% endfor %}
     </table>
+
+<select name="Facility">
+{% for item in aeds %}
+          <option value= {{ item.facility}}>{{ item.facility }}</option>
+ 
+ {% endfor %}       
+        </select>
 
    
 
