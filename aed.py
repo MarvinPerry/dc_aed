@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from pw import ALC, dbpass
+from datetime import datetime
 import pdb
 #### Begining trace here #####
 # pdb.set_trace()
@@ -60,7 +61,7 @@ def index():
 
 
 # the page for users searching for one specific aed by id
-@aed.route('/aed_id/')
+# @aed.route('/aed_id/')
 @aed.route('/get_id/', methods=['GET', 'POST'])
 @aed.route('/get_id/<int:num>', methods=['GET', 'POST'])
 
@@ -106,7 +107,7 @@ def by_facility():
     if request.method =='GET':
 
         cur.execute("SELECT DISTINCT facility FROM defibs ORDER BY facility")
-        print "after swl request"
+        print "after sql request"
         distFacil = cur.fetchall()
         return render_template('by_facility.html', distFacil=distFacil)
     
@@ -130,8 +131,8 @@ def query():
     if request.method == 'GET':
         try:
             print request.form['Facility']
-        except Exception as E:
-            print str(E)
+        except:
+            pass
         return render_template('query.html')
 
 
@@ -145,7 +146,7 @@ def query():
             data = (1,)
         cur.execute(SQL, data)
         usrAed = cur.fetchall()
-        return render_template('query.html', usrAed=usrAed)
+        return render_template('query.html', usrAed=usrAed, data=data)
 
 
 
@@ -158,16 +159,19 @@ def queryrange():
         return render_template('queryrange.html')
 
     if request.method=='POST':
+        if request.form['endYr'] != None and request.form['startYr'] != None:
+            endYr = (request.form['endYr']) 
+            startYr = (request.form['startYr'])
 
-        if request.method =='POST':
+            print startYr
+            print endYr
 
-            if int(request.form['endYr']) != None and int(request.form['startYr']) != None:
-                endYr = int(request.form['endYr']) 
-                startYr = int(request.form['startYr'])
+            # cur.execute("SELECT * from defibs WHERE DATE BETWEEN startYr and endYr ")
+            # rangAed = cur.fetchall()
+        return render_template('queryrange.html')#, rangAed=rangAed)
 
-                cur.execute("SELECT * from defibs WHERE DATE BETWEEN startYr and endYr ")
-                rangAed = cur.fetchall()
-        return render_template('queryrange.html', rangAed=rangAed)
+    else:
+        return render_template('queryrange.html')
 
 
 

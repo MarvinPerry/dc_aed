@@ -1,35 +1,43 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <link rel="stylesheet" type="text/css" href="static/style.css">
-</head>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/static/style.css">
+        <meta charset="utf-8"/>
+        <title>DC AEDs</title>
+    </head>
 
-<meta charset="utf-8"/>
-<title>DC AEDs</title>
+    <ul>
+            <li><a href="index">index</a></li>
+            <li><a href="get_id">search by id</a></li>
+            <li><a href="by_facility">searchby facility</a>(coming soon)</li> 
+            <li><a href="queryrange"> search by date range</a>(coming soon)</li>
+        </ul>
 
-<h2><center>Automatic External Defibrilators</center></h2>
-</head>
+    <body>
+        {% if usrAed %}
+            <h2> These are the first {{ data[0] }} automatic exernal defibrilators in Washington, D.C.</h2>
+        {% else %}
+            <h2><center>Automatic External Defibrilators in Washington, D.C. </center></h2>
+        {% endif %}
 
-<body>
+        <form method ="POST" action="/query">
+            <label>Enter the # of AED records to show: </label> <input name="num" type = "number" />
+            <input type ="submit"  input value ="Find"/>
+        </form>
+    <br>
+    <br>
 
-    <form method ="POST" action="/query">
-        <label>Enter the # of AED records to show: </label> <input name="num" type = "number" />
-        <input type ="submit"  input value ="Find"/>
-    </form>
-<br>
-<br>
-
-<table  id="direct_id" border="1" class ="direct_id">
-<th>id</th> <th>Acquired</th><th>Facility</th><th>Location</th><th>Brand</th><th>Model</th><th>Model #</th><th>Lng</th><th>Lat</th><th>Expiration Date</th><th>Replaced</th>
+    <table  id="direct_id" border="1" class ="direct_id">
+    <th>id</th> <th>Acquired</th><th>Facility</th><th>Location</th><th>Brand</th><th>Model</th><th>Model #</th><th>Lng</th><th>Lat</th><th>Expiration Date</th><th>Replaced</th>
 
 
-{% for item in usrAed %}
-    <tr>
-        <td>{{ item[0] }}</td> <td>{{ item[1] }}</td> <td>{{ item[2] }}</td> <td>{{ item[3] }}</td><td>{{ item[4] }}</td><td>{{ item[5] }}</td><td>{{ item[6] }}</td><td>{{ item[7] }}</td><td>{{ item[8] }}</td><td>{{ item[9] }}</td><td>{{ item[10] }}</td>
-    </tr>
-{% endfor %}
-</table>
+    {% for item in usrAed %}
+        <tr>
+            <td>{{ item[0] }}</td> <td>{{ item[1] }}</td> <td>{{ item[2] }}</td> <td>{{ item[3] }}</td><td>{{ item[4] }}</td><td>{{ item[5] }}</td><td>{{ item[6] }}</td><td>{{ item[7] }}</td><td>{{ item[8] }}</td><td>{{ item[9] }}</td><td>{{ item[10] }}</td>
+        </tr>
+    {% endfor %}
+    </table>
 
-</body>
+    </body>
 
 </html>

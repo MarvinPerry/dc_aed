@@ -1,41 +1,51 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="static/style.css">
+        <link rel="stylesheet" type="text/css" href="/static/style.css">
         <meta charset="utf-8"/>
     </head>
-    <h2><center>Automactic External Defibrilators in Washington D.C. </center></h2>
 
-    
+    <body>
+            <h2><center>Automatic External Defibrilators in Washington, D.C. </center></h2>
+            
+            <ul>
 
-    <table border ="1">
-   
-        <th>id</th>
-        <th>Date Acquired</th>
-        <th>Facility</th>
-        <th>Location</th>
-        <th>Brand</th>
-        <th>Model</th>
-        <th>Model #</th>
-        <th>X-Coordinates</th>
-        <th>Y-Coordinates</th>
-        <th> Expiration Date</th>
-         {% for item in aeds %}
-            <tr>
-                <td>{{item.ident}}</td><td>{{item.acquired}}</td> <td>{{item.facility}}</td> <td>{{item.location}}</td> <td>{{item.brand}}</td>
-                <td>{{item.aed_model}}</td><td>{{item.aed_model_num}}</td><td>{{item.lng}}</td><td>{{item.lat}}</td><td>{{item.expires}}</td>
+                <li><a href="get_id">search by id</a></li>
+                <li><a href="query">search for multiple AED's</a></li> 
+                <li><a href="by_facility">search by facility</a>(coming soon)</li>
+                <li><a href="queryrange"> search by date range</a>(coming soon)</li>
+            </ul>
 
-            </tr>
-         {% endfor %}
-    </table>
 
-<select name="Facility">
-{% for item in aeds %}
-          <option value= {{ item.facility}}>{{ item.facility }}</option>
- 
- {% endfor %}       
-        </select>
+            
 
-   
+            <table  id="direct_id" table border ="1" class ="direct_id">
+           
+                <th>id</th>
+                <th>Date Acquired</th>
+                <th>Facility</th>
+                <th>Location</th>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>Model #</th>
+                <th>X-Coordinates</th>
+                <th>Y-Coordinates</th>
+                <th> Expiration Date</th>
+                 {% for item in aeds %}
+                    <tr>
+                        <td>{{item.ident}}</td><td>{{item.acquired}}</td> <td>{{item.facility}}</td> <td>{{item.location}}</td> <td>{{item.brand}}</td>
+                        <td>{{item.aed_model}}</td><td>{{item.aed_model_num}}</td><td>{{item.lng}}</td><td>{{item.lat}}</td><td>{{item.expires}}</td>
 
+                    </tr>
+                 {% endfor %}
+            </table>
+
+        <select name="Facility">
+        {% for item in aeds %}
+                  <option value= {{ item.facility}}>{{ item.facility }}</option>
+         
+         {% endfor %}       
+                </select>
+
+        </body>
 </html>

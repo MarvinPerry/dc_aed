@@ -4,26 +4,14 @@
     <title>DC AEDs</title>
     <link rel="stylesheet" type="text/css" href="/static/style.css">
     <meta charset="utf-8"/>
+
+
 </head>
 
 
-
-
-<h2><center>Automatic External Defibrilators in Washington, D.C. </center></h2>
-
-<ul>
-
-            
-                <li><a href="query">search for multiple AEDs</a></li> 
-                <li><a href="by_facility">search by facility</a>(coming soon)</li>
-                <li><a href="queryrange"> search by date range</a>(coming soon)</li>
-            </ul>
-
-
 <body>
+<br>
 
-{% if usrAed %}
-    
 <table  id="direct_id" border="1" class ="direct_id">
 <th>id</th> <th>Acquired</th><th>Facility</th><th>Location</th><th>Brand</th><th>Model</th><th>Model #</th><th>X Coordinates</th><th>Y Coordinates</th><th>Expiration Date</th><th>Replaced</th>
 
@@ -33,16 +21,6 @@
         </tr>
     {% endfor %}
 
-{% else %}
-    <form method ="POST" action="/get_id/">
-    <label>id: </label> <input name="num" type = "number" />
-    <input type ="submit"  input value ="Find"/>
-    </form>
-<br>
-<br>
-{% endif %}
-
 </table>
 </body>
-
 </html>

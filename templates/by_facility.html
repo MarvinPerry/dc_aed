@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <link rel="stylesheet" type="text/css" href="/static/style.css">
+        </head>
+
+    <body>
+
+        <ul>
+            <li><a href="get_id">search by id</a></li>
+            <li><a href="query">search for multiple AED's</a></li> 
+            <li><a href="index">index</a></li>
+            <li><a href="queryrange"> search by date range</a>(coming soon)</li>
+        </ul>
+
+        <!-- dropdown selection box  of the facilities. need to return the submitted value back  to use  in a query to search by facility-->
+        <form method = "POST"  action="/by_facility">
+        <select name="Facility">
+            {% for item in distFacil %}
+            
+                      <option value= {{ item[0] }}>{{ item[0] }}</option>
+             
+             {% endfor %}       
+         </select>
+         <input type="submit" value="Submit">
+
+
+
+
+
+    </body>
+</html>

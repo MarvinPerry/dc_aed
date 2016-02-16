@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="/static/style.css">
+</head>
+    <body>
+        <ul>
+            <li><a href="get_id">search by id</a></li>
+            <li><a href="query">search for multiple AED's</a></li> 
+            <li><a href="index">index</a>(coming soon)</li>
+            <li><a href="by_facility"> search by facility</a>(coming soon)</li>
+        </ul>
+
+
+    <br>
+    <br>
+         <form method ="POST" action="/queryrange">
+            <label>Starting year of query: </label> <input name="startYr" type = "date"/>
+            <label> Ending year of query: </label> <input name="endYr" type= "date"/>
+
+            <input type ="submit"  input value ="Submit"/>
+        </form>
+<br>
+<br>
+
+<table  id="direct_id" border="1" class ="direct_id">
+<th>id</th> <th>Acquired</th><th>Facility</th><th>Location</th><th>Brand</th><th>Model</th><th>Model #</th><th>Lng</th><th>Lat</th><th>Expiration Date</th><th>Replaced</th>
+
+
+{% for item in usrAed %}
+    <tr>
+        <td>{{ item[0] }}</td> <td>{{ item[1] }}</td> <td>{{ item[2] }}</td> <td>{{ item[3] }}</td><td>{{ item[4] }}</td><td>{{ item[5] }}</td><td>{{ item[6] }}</td><td>{{ item[7] }}</td><td>{{ item[8] }}</td><td>{{ item[9] }}</td><td>{{ item[10] }}</td>
+    </tr>
+{% endfor %}
+</table>
+        
+
+
+    </body>
+
+
+</html>
