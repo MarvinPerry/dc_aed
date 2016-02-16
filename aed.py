@@ -5,14 +5,13 @@ import psycopg2
 from pw import ALC, dbpass
 import datetime
 import pdb
+
 #### Begining trace here #####
 # pdb.set_trace()
 
 
 
 ####################################################################################################
-#write raw sql commands tomorrow
-
 #tries to create the connection to the database, and prints failure message if necessarry
 try:
     conn = psycopg2.connect(database='AED', user='postgres', password=dbpass, host='127.0.0.1', port='5432')
@@ -49,10 +48,6 @@ class Defibs(db.Model):
     expires = db.Column(db.Text)
     replaced = db.Column(db.Text)
 
-
-
-
-
 # index page that currently shows a record of every AED in the table
 @aed.route('/')
 def index():
@@ -62,39 +57,29 @@ def index():
 
 
 # the page for users searching for one specific aed by id
-# @aed.route('/aed_id/')
 @aed.route('/get_id/', methods=['GET', 'POST'])
-# @aed.route('/get_id/<int:num>', methods=['GET', 'POST'])
+def get_id():
 
-def get_id(num=None):
-    if request.method == 'GET' and num == None:
+    if request.method == 'GET':
         
         print "testing here 0"
         return render_template('get_id.html')
 
-    elif request.method == 'POST':
-        print "testing here 1"
-        num=request.form['num']
-        # pdb.set_trace()
-
+    elif request.method == 'POST' and request.form['num'].isdigit() == True: 
         data = (request.form['num'],)
+        print "here 1"
+
         SQL = "SELECT * FROM defibs WHERE ident =(%s)"   
         cur.execute(SQL, data)
         usrAed = cur.fetchall()
+        
         # passing in num and usrAed to the singular aed page
-        return render_template('get_id.html', num=num, usrAed=usrAed)
+        return render_template('get_id.html', usrAed=usrAed)
 
     else:
         print "testing here 2"
         return render_template('get_id.html')
 
-
-#########################################################################################
-
-# @aed.route('/aed_id/')
-# def show_id():
-#     return render_template('aed_id.html')
-  
         
 #########################################################################################
 #the page for users searching for AEDs by facility
@@ -104,26 +89,30 @@ def by_facility():
     if request.method =='GET':
 
         cur.execute("SELECT DISTINCT facility FROM defibs ORDER BY facility")
-        print "after sql request"
         distFacil = cur.fetchall()
         return render_template('by_facility.html', distFacil=distFacil)
     
 
     if request.method == 'POST':
         try:
+            cur.execute("SELECT DISTINCT facility FROM defibs ORDER BY facility")
+            distFacil = cur.fetchall()
+            
             soloFacil = request.form['Facility']
-            data = (soloFacil,) #puta the facility returned from the form in a tuple
+            data = (soloFacil,) #puts the facility returned from the form in a tuple named data
             
-            
+            #assigns the SQL command to a variable named SQL with a variable placeholder in the form of %s
+            #which is then all passed into cur.execute and run, with the results being saved as usrFacil
             SQL = "SELECT * FROM defibs WHERE facility =(%s)"   
             cur.execute(SQL, data)
             usrFacil = cur.fetchall()
+
             count = len(usrFacil)
         except Exception as E:
             print str(E)
         
         
-        return render_template('by_facility.html', soloFacil=soloFacil, usrFacil=usrFacil, count=count)
+        return render_template('by_facility.html', soloFacil=soloFacil, usrFacil=usrFacil, count=count, distFacil=distFacil)
 
 
 #########################################################################################
@@ -132,11 +121,12 @@ def by_facility():
 @aed.route('/multi/', methods = ['GET', 'POST'])
 def multi():
     if request.method == 'GET':
+        count = None
         try:
             print request.form['Facility']
         except:
             pass
-        return render_template('multi.html')
+        return render_template('multi.html', count=count)
 
 
     if request.method == 'POST':
@@ -149,7 +139,8 @@ def multi():
             data = (1,)
         cur.execute(SQL, data)
         usrAed = cur.fetchall()
-        return render_template('multi.html', usrAed=usrAed, data=data)
+        count = len(usrAed)
+        return render_template('multi.html', usrAed=usrAed, data=data, count=count)
 
 
 
@@ -179,8 +170,6 @@ def by_date():
 
     else:
         return render_template('by_date.html')
-
-
 
 
 if __name__== "__main__":

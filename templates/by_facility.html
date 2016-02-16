@@ -13,7 +13,7 @@
             <li><a href="../by_date"> search by date range</a></li>
         </ul>
 
-        <!-- dropdown selection box  of the facilities. need to return the submitted value back  to use  in a query to search by facility-->
+        <!-- dropdown selector of the facilities which is returned as the variable to use in a query to search by facility-->
         <form method = "POST"  action="/by_facility/">
         <select name="Facility">
             {% for item in distFacil %}
@@ -26,6 +26,7 @@
          <br>
          <br>
 
+        <!-- if usrFacil returns true, will then display the table since there are items inside it -->
         {% if usrFacil %}
          <table  id="direct_id" border="1" class ="direct_id">
             <th><a href="../get_id">id</a></th> <th>Acquired</th><th><a href="../by_facility">Facility</a></th><th>Location</th><th>Brand</th><th>Model</th><th>Model #</th><th>Lng</th><th>Lat</th><th>Expiration Date</th><th>Replaced</th>
@@ -41,11 +42,11 @@
                 {% if count == 1 %}
                     This is the only AED registered at <strong>{{ usrFacil[0][2] }}</strong>
                 {% else %}
-                    These are the <strong>{{ count }}</strong> AEDs registered at <strong>{{ usrFacil[0][2] }}</strong>
+                    Here are the <strong>{{ count }}</strong> AEDs registered at <strong>{{ usrFacil[0][2] }}</strong>
                 {% endif %}
                 <br>
                 <br> 
-                
+
         {% endif %}
         </table>
 

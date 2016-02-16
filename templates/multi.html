@@ -10,12 +10,15 @@
             <li><a href="/">index</a></li>
             <li><a href="../get_id">search by id</a></li>
             <li><a href="../by_facility">search by facility</a></li>
-            <li><a href="../queryrange"> search by date range</a></li>       
+            <li><a href="../by_date"> search by date range</a></li>       
         </ul>
 
     <body>
-        {% if usrAed %}
-            <h2> These are the first {{ data[0] }} automatic exernal defibrilators in Washington, D.C.</h2>
+
+        {% if count > 1 %}
+            <h2> Here are the first {{ data[0] }} automatic exernal defibrilators in Washington, D.C.</h2>
+        {% elif count == 1 %}
+            <h2> Here is the first listed automatic exernal defibrilator in Washington, D.C.</h2>
         {% else %}
             <h2><center>Automatic External Defibrilators in Washington, D.C. </center></h2>
         {% endif %}
