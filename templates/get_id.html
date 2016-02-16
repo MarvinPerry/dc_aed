@@ -11,12 +11,11 @@
 
 <h2><center>Automatic External Defibrilators in Washington, D.C. </center></h2>
 
-<ul>
-
-            
-                <li><a href="query">search for multiple AEDs</a></li> 
-                <li><a href="by_facility">search by facility</a>(coming soon)</li>
-                <li><a href="queryrange"> search by date range</a>(coming soon)</li>
+            <ul>
+                <li><a href="/">index</a></li>
+                <li><a href="../multi">search for multiple AEDs</a></li>
+                <li><a href="../by_facility">search by facility</a></li>
+                <li><a href="../by_date"> search by date range</a></li>    
             </ul>
 
 
@@ -25,7 +24,7 @@
 {% if usrAed %}
     
 <table  id="direct_id" border="1" class ="direct_id">
-<th>id</th> <th>Acquired</th><th>Facility</th><th>Location</th><th>Brand</th><th>Model</th><th>Model #</th><th>X Coordinates</th><th>Y Coordinates</th><th>Expiration Date</th><th>Replaced</th>
+    <th><a href="../get_id">id</a></th> <th><a href="../by_date">Acquired</a></th><th><a href="../by_facility">Facility</a></th><th>Location</th><th>Brand</th><th>Model</th><th>Model #</th><th>X Coordinates</th><th>Y Coordinates</th><th>Expiration Date</th><th>Replaced</th>
 
     {% for item in usrAed %}
         <tr>

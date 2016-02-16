@@ -1,8 +1,9 @@
 from flask import Flask, render_template, request
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
+import psycopg2
 from pw import ALC, dbpass
-from datetime import datetime
+import datetime
 import pdb
 #### Begining trace here #####
 # pdb.set_trace()
@@ -11,7 +12,7 @@ import pdb
 
 ####################################################################################################
 #write raw sql commands tomorrow
-import psycopg2
+
 #tries to create the connection to the database, and prints failure message if necessarry
 try:
     conn = psycopg2.connect(database='AED', user='postgres', password=dbpass, host='127.0.0.1', port='5432')
@@ -63,7 +64,7 @@ def index():
 # the page for users searching for one specific aed by id
 # @aed.route('/aed_id/')
 @aed.route('/get_id/', methods=['GET', 'POST'])
-@aed.route('/get_id/<int:num>', methods=['GET', 'POST'])
+# @aed.route('/get_id/<int:num>', methods=['GET', 'POST'])
 
 def get_id(num=None):
     if request.method == 'GET' and num == None:
@@ -96,13 +97,9 @@ def get_id(num=None):
   
         
 #########################################################################################
+#the page for users searching for AEDs by facility
 
-
-#the page for users searching for a range of aeds, from 1 to the user entered number
-
-
-
-@aed.route('/by_facility', methods= ['GET', 'POST'])
+@aed.route('/by_facility/', methods= ['GET', 'POST'])
 def by_facility():
     if request.method =='GET':
 
@@ -115,25 +112,31 @@ def by_facility():
     if request.method == 'POST':
         try:
             soloFacil = request.form['Facility']
-            print soloFacil
+            data = (soloFacil,) #puta the facility returned from the form in a tuple
+            
+            
+            SQL = "SELECT * FROM defibs WHERE facility =(%s)"   
+            cur.execute(SQL, data)
+            usrFacil = cur.fetchall()
+            count = len(usrFacil)
         except Exception as E:
             print str(E)
         
         
-        return render_template('by_facility.html', soloFacil=soloFacil)
+        return render_template('by_facility.html', soloFacil=soloFacil, usrFacil=usrFacil, count=count)
 
 
 #########################################################################################
+#the page for users searching for a range of AEDs, from 1 to the user entered number
 
-
-@aed.route('/query', methods = ['GET', 'POST'])
-def query():
+@aed.route('/multi/', methods = ['GET', 'POST'])
+def multi():
     if request.method == 'GET':
         try:
             print request.form['Facility']
         except:
             pass
-        return render_template('query.html')
+        return render_template('multi.html')
 
 
     if request.method == 'POST':
@@ -146,32 +149,36 @@ def query():
             data = (1,)
         cur.execute(SQL, data)
         usrAed = cur.fetchall()
-        return render_template('query.html', usrAed=usrAed, data=data)
+        return render_template('multi.html', usrAed=usrAed, data=data)
 
 
 
 #########################################################################################
 
-@aed.route('/queryrange', methods =['GET', 'POST'])
-def queryrange():
+@aed.route('/by_date/', methods =['GET', 'POST'])
+def by_date():
     if request.method == 'GET':
     
-        return render_template('queryrange.html')
+        return render_template('by_date.html')
 
     if request.method=='POST':
         if request.form['endYr'] != None and request.form['startYr'] != None:
-            endYr = (request.form['endYr']) 
-            startYr = (request.form['startYr'])
+            startYr = (request.form['startYr'].split("-"))
+            endYr = (request.form['endYr'].split("-")) 
+            
+            #converts the user entered years from the form to python date objects
+            startYr = datetime.date(int(startYr[0]),int(startYr[1]),int(startYr[2]))
+            endYr = datetime.date(int(endYr[0]),int(endYr[1]),int(endYr[2]))
+                
+            SQL = "SELECT * from defibs WHERE acquired BETWEEN %s and %s"
+            dates = (startYr, endYr)
 
-            print startYr
-            print endYr
-
-            # cur.execute("SELECT * from defibs WHERE DATE BETWEEN startYr and endYr ")
-            # rangAed = cur.fetchall()
-        return render_template('queryrange.html')#, rangAed=rangAed)
+            cur.execute(SQL,dates)
+            rangAed = cur.fetchall()
+        return render_template('by_date.html', rangAed=rangAed)
 
     else:
-        return render_template('queryrange.html')
+        return render_template('by_date.html')
 
 
 

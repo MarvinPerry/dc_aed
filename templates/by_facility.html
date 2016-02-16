@@ -7,26 +7,47 @@
     <body>
 
         <ul>
-            <li><a href="get_id">search by id</a></li>
-            <li><a href="query">search for multiple AED's</a></li> 
-            <li><a href="index">index</a></li>
-            <li><a href="queryrange"> search by date range</a>(coming soon)</li>
+            <li><a href="/">index</a></li>
+            <li><a href="../get_id">search by id</a></li>
+            <li><a href="../multi">search for multiple AED's</a></li> 
+            <li><a href="../by_date"> search by date range</a></li>
         </ul>
 
         <!-- dropdown selection box  of the facilities. need to return the submitted value back  to use  in a query to search by facility-->
-        <form method = "POST"  action="/by_facility">
+        <form method = "POST"  action="/by_facility/">
         <select name="Facility">
             {% for item in distFacil %}
             
-                      <option value= {{ item[0] }}>{{ item[0] }}</option>
+                      <option value= "{{ item[0] }}">{{ item[0] }}</option>
              
              {% endfor %}       
          </select>
          <input type="submit" value="Submit">
+         <br>
+         <br>
 
+        {% if usrFacil %}
+         <table  id="direct_id" border="1" class ="direct_id">
+            <th><a href="../get_id">id</a></th> <th>Acquired</th><th><a href="../by_facility">Facility</a></th><th>Location</th><th>Brand</th><th>Model</th><th>Model #</th><th>Lng</th><th>Lat</th><th>Expiration Date</th><th>Replaced</th>
 
+    
+                {% for item in usrFacil %}
+                    <tr>
+                        <td>{{ item[0] }}</td> <td>{{ item[1] }}</td> <td>{{ item[2] }}</td> <td>{{ item[3] }}</td><td>{{ item[4] }}</td><td>{{ item[5] }}</td><td>{{ item[6] }}</td><td>{{ item[7] }}</td><td>{{ item[8] }}</td><td>{{ item[9] }}</td><td>{{ item[10] }}</td>
+                    </tr>
+                {% endfor %}
 
-
+                <!-- an if else block to use the correct grammar for the amount of AEDs returned  -->
+                {% if count == 1 %}
+                    This is the only AED registered at <strong>{{ usrFacil[0][2] }}</strong>
+                {% else %}
+                    These are the <strong>{{ count }}</strong> AEDs registered at <strong>{{ usrFacil[0][2] }}</strong>
+                {% endif %}
+                <br>
+                <br> 
+                
+        {% endif %}
+        </table>
 
     </body>
 </html>
