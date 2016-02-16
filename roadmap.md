@@ -1,4 +1,4 @@
-1. Query DC’s  ARC GIS  site for the AED data
+1. pull AED data from DC’s Open Data site
 
 - This API call shouldn’t be made for each user since the data doesn’t seem to be updated frequently. When the API call is made initially it should be flagged with date of the request. When a new user requests the data the current time and the time of the last request should be compared, and if a sufficient amount of time has passed, the API call should be made again, and the dataset and the date stamp updated. 
 
@@ -42,4 +42,4 @@ model(string
 
 next goals:
 
-Take the raw results and format it in a more useable way to allow for sorting it in ascending and descending order without having to query the db again. This means html and some javascript(?)
+Take the raw results and using html, css and javascript, display it in a more useable way to allow for things such as sorting columns in ascending, descending or alphaabetical.
