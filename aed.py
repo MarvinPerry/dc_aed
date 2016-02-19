@@ -9,8 +9,6 @@ import pdb
 #### Begining trace here #####
 # pdb.set_trace()
 
-
-
 ####################################################################################################
 #tries to create the connection to the database, and prints failure message if necessarry
 try:
@@ -53,7 +51,7 @@ class Defibs(db.Model):
 def index():
     aeds = Defibs.query.all()
     return render_template('index.html', aeds = aeds)
-#########################################################################################
+#################################################################################################
 
 
 # the page for users searching for one specific aed by id
@@ -87,32 +85,43 @@ def get_id():
 @aed.route('/by_facility/', methods= ['GET', 'POST'])
 def by_facility():
     if request.method =='GET':
-
         cur.execute("SELECT DISTINCT facility FROM defibs ORDER BY facility")
         distFacil = cur.fetchall()
         return render_template('by_facility.html', distFacil=distFacil)
     
 
-    if request.method == 'POST':
+
+    if request.method == 'POST' and request.form['facilNameTypd']:
         try:
-            cur.execute("SELECT DISTINCT facility FROM defibs ORDER BY facility")
-            distFacil = cur.fetchall()
-            
-            soloFacil = request.form['Facility']
+            print request.form['facilNameTypd']
+            # cur.execute("SELECT DISTINCT facility FROM defibs ORDER BY facility")
+            # distFacil = cur.fetchall()
+            usrInput = request.form['facilNameTypd']
+            soloFacil = ('%'+ request.form['facilNameTypd'] + '%')
+
             data = (soloFacil,) #puts the facility returned from the form in a tuple named data
             
             #assigns the SQL command to a variable named SQL with a variable placeholder in the form of %s
             #which is then all passed into cur.execute and run, with the results being saved as usrFacil
-            SQL = "SELECT * FROM defibs WHERE facility =(%s)"   
+        
+            SQL = "SELECT * FROM defibs WHERE facility::text ILIKE (%s)"   
             cur.execute(SQL, data)
             usrFacil = cur.fetchall()
-
             count = len(usrFacil)
+            return render_template('by_facility.html', soloFacil=soloFacil, usrFacil=usrFacil, count=count, usrInput=usrInput)
+        
         except Exception as E:
             print str(E)
+
+        
+    elif request.form['facilNameTypd']:
+        print "got here 3"
+        facilNameTypd = request.form['facilNameTypd']
+        return render_template('by_facility.html', facilNameTypd=facilNameTypd)
+
+
         
         
-        return render_template('by_facility.html', soloFacil=soloFacil, usrFacil=usrFacil, count=count, distFacil=distFacil)
 
 
 #########################################################################################
@@ -171,11 +180,24 @@ def by_date():
     else:
         return render_template('by_date.html')
 
+#########################################################################################
+@aed.route('/test/', methods = ['GET', 'POST'])
+def test():
+
+    if request.method == 'GET':
+        return render_template('test.html')
+
+
+
+
+#########################################################################################
+
+
+
 
 if __name__== "__main__":
     aed.debug = True
     aed.run()
-
 
 
 

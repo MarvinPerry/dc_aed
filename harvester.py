@@ -73,7 +73,7 @@ while ident != 0: #consider making this none/null instead of zero
 
 
 	try:
-		cur. execute("""CREATE TABLE IF NOT EXISTS DEFIBS(ident INTEGER PRIMARY KEY NOT NULL,  acquired DATE, facility TEXT NOT NULL, location TEXT, brand TEXT, aed_model TEXT, aed_model_num TEXT, Lng DOUBLE PRECISION, Lat DOUBLE PRECISION, expires TEXT, replaced TEXT);""")
+		cur. execute("""CREATE TABLE IF NOT EXISTS DEFIBS(ident INTEGER PRIMARY KEY NOT NULL, acquired DATE, facility TEXT, location TEXT, brand TEXT, aed_model TEXT, aed_model_num TEXT, Lng DOUBLE PRECISION, Lat DOUBLE PRECISION, expires TEXT, replaced TEXT);""")
 		conn.commit()
 
 		cur.execute("INSERT INTO DEFIBS(ident, acquired, facility, location, brand, aed_model, aed_model_num, Lng, Lat, expires, replaced)\

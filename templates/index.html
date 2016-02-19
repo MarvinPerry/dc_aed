@@ -3,6 +3,14 @@
     <head>
         <link rel="stylesheet" type="text/css" href="/static/style.css">
         <meta charset="utf-8"/>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css">
+
+        <script type="text/javascript" script src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+        
+    
     </head>
 
     <body>
@@ -20,26 +28,25 @@
 
             
 
-            <table  id="direct_id" table border ="1" class ="direct_id">
-           
-                <th><a href="../get_id">id</a></th><th>Date Acquired</th><th><a href="../by_facility">Facility</a></th>
-                <th>Location</th><th>Brand</th><th>Model</th><th>Model #</th><th>X-Coordinates</th><th>Y-Coordinates</th>
-                <th> Expiration Date</th>
-                 
-                 {% for item in aeds %}
-                    <tr>
-                        <td>{{item.ident}}</td><td>{{item.acquired}}</td> <td>{{item.facility}}</td> <td>{{item.location}}</td> <td>{{item.brand}}</td>
-                        <td>{{item.aed_model}}</td><td>{{item.aed_model_num}}</td><td>{{item.lng}}</td><td>{{item.lat}}</td><td>{{item.expires}}</td>
-                    </tr>
-                 {% endfor %}
+            <table id="direct_id" table border ="1" class ="direct_id">
+                <thead>
+                    <th><a href="../get_id">id</a></th><th>Date Acquired</th><th><a href="../by_facility">Facility</a></th>
+                    <th>Location</th><th>Brand</th><th>Model</th><th>Model #</th><th>X-Coordinates</th><th>Y-Coordinates</th>
+                    <th> Expiration Date</th>
+                 </thead>
+                <tbody>
+                     {% for item in aeds %}
+                        <tr>
+                            <td>{{item.ident}}</td><td>{{item.acquired}}</td> <td>{{item.facility}}</td> <td>{{item.location}}</td> <td>{{item.brand}}</td>
+                            <td>{{item.aed_model}}</td><td>{{item.aed_model_num}}</td><td>{{item.lng}}</td><td>{{item.lat}}</td><td>{{item.expires}}</td>
+                        </tr>
+                     {% endfor %}
+                </tbody>
             </table>
 
-        <select name="Facility">
-        {% for item in aeds %}
-                  <option value= {{ item.facility}}>{{ item.facility }}</option>
-         
-         {% endfor %}       
-                </select>
-
+                <script type="text/javascript">
+                $(document).ready(function(){
+            ("table#direct_id").DataTable();
+        } );</script>
         </body>
 </html>

@@ -2,6 +2,17 @@
     <html>
         <head>
             <link rel="stylesheet" type="text/css" href="/static/style.css">
+            
+            <!-- links to the Selects2  -->
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2-rc.1/css/select2.min.css" rel="stylesheet" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2-rc.1/js/select2.min.js"></script>
+
+            <!-- <script type="text/javascript"> -->
+                <!-- $(document).ready(function(){ -->
+                <!-- $('.Facility').select2(); -->
+            <!-- }); -->
+            <!-- </script> -->
+        
         </head>
 
     <body>
@@ -14,20 +25,32 @@
         </ul>
 
         <!-- dropdown selector of the facilities which is returned as the variable to use in a query to search by facility-->
-        <form method = "POST"  action="/by_facility/">
+        <!-- <form method = "POST"  action="/by_facility/">
         <select name="Facility">
             {% for item in distFacil %}
             
-                      <option value= "{{ item[0] }}">{{ item[0] }}</option>
+                <option value= "{{ item[0] }}">{{ item[0] }}</option>
              
-             {% endfor %}       
-         </select>
-         <input type="submit" value="Submit">
-         <br>
-         <br>
+            {% endfor %}
+                <option value="" selected disabled>Please select an option...</option>       
+        </select>
+        <input type="submit" value="Submit"> -->
+
+
+        <!-- form to allow user to enter a facility name by entering text  -->
+        <form method = "POST" action="">
+        <label>Facility: </label> <input name="facilNameTypd" type ="text"/>
+        <input type ="submit"  input value ="Find"/>
+        </form>
+        <br>
+        <br>
+
+
 
         <!-- if usrFacil returns true, will then display the table since there are items inside it -->
         {% if usrFacil %}
+            
+
          <table  id="direct_id" border="1" class ="direct_id">
             <th><a href="../get_id">id</a></th> <th>Acquired</th><th><a href="../by_facility">Facility</a></th><th>Location</th><th>Brand</th><th>Model</th><th>Model #</th><th>Lng</th><th>Lat</th><th>Expiration Date</th><th>Replaced</th>
 
@@ -40,9 +63,9 @@
 
                 <!-- an if else block to use the correct grammar for the amount of AEDs returned  -->
                 {% if count == 1 %}
-                    This is the only AED registered at <strong>{{ usrFacil[0][2] }}</strong>
+                    This is the only AED found at <strong>{{ usrInput }}</strong>
                 {% else %}
-                    Here are the <strong>{{ count }}</strong> AEDs registered at <strong>{{ usrFacil[0][2] }}</strong>
+                    Here are the <strong>{{ count }}</strong> AEDs found with the name <strong>{{ usrInput }}</strong>
                 {% endif %}
                 <br>
                 <br> 
