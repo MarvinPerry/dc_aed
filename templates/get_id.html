@@ -24,11 +24,11 @@
 {% if usrAed %}
     
 <table  id="direct_id" border="1" class ="direct_id">
-    <th><a href="../get_id">id</a></th> <th><a href="../by_date">Acquired</a></th><th><a href="../by_facility">Facility</a></th><th>Location</th><th>Brand</th><th>Model</th><th>Model #</th><th>X Coordinates</th><th>Y Coordinates</th><th>Expiration Date</th><th>Replaced</th>
+    <th><a href="../get_id">id</a></th> <th><a href="../by_date">Acquired</a></th><th><a href="../by_facility">Facility</a></th><th>Location</th><th>Brand</th><th>Model</th><th>Model #</th><th>X Coordinates</th><th>Y Coordinates</th><th>Expiration Date</th><th>Replaced</th><th>Address</th>
 
     {% for item in usrAed %}
         <tr>
-            <td>{{ item[0] }}</td> <td>{{ item[1] }}</td> <td>{{ item[2] }}</td> <td>{{ item[3] }}</td><td>{{ item[4] }}</td><td>{{ item[5] }}</td><td>{{ item[6] }}</td><td>{{ item[7] }}</td><td>{{ item[8] }}</td><td>{{ item[9] }}</td><td>{{ item[10] }}</td>
+            <td>{{ item[0] }}</td> <td>{{ item[1] }}</td> <td>{{ item[2] }}</td> <td>{{ item[3] }}</td><td>{{ item[4] }}</td><td>{{ item[5] }}</td><td>{{ item[6] }}</td><td>{{ item[7] }}</td><td>{{ item[8] }}</td><td>{{ item[9] }}</td><td>{{ item[10] }}</td><td>{{ item[11] }}</td>
         </tr>
     {% endfor %}
 

@@ -4,49 +4,43 @@
         <link rel="stylesheet" type="text/css" href="/static/style.css">
         <meta charset="utf-8"/>
 
+         <!-- links to required jquery and Datatables CDN resources -->
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css">
-
-        <script type="text/javascript" script src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
-        
+        <script type="text/javascript" src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript">
+        $(document).ready(function(){
+            $('#direct_id').DataTable();
+        });
+        </script>
     
     </head>
 
     <body>
-            <h2><center>Automatic External Defibrilators in Washington, D.C. </center></h2>
+        <h2><center>Automatic External Defibrilators in Washington, D.C. </center></h2>
+        
+        <ul>
+
+            <li><a href="get_id">search by id</a></li>
+            <li><a href="multi">search for multiple AED's</a></li> 
+            <li><a href="by_facility">search by facility</a></li>
+            <li><a href="by_date"> search by date range</a>(coming soon)</li>
             
-            <ul>
+        </ul>
 
-                <li><a href="get_id">search by id</a></li>
-                <li><a href="multi">search for multiple AED's</a></li> 
-                <li><a href="by_facility">search by facility</a></li>
-                <li><a href="by_date"> search by date range</a>(coming soon)</li>
-                
-            </ul>
-
-
-            
-
-            <table id="direct_id" table border ="1" class ="direct_id">
-                <thead>
-                    <th><a href="../get_id">id</a></th><th>Date Acquired</th><th><a href="../by_facility">Facility</a></th>
-                    <th>Location</th><th>Brand</th><th>Model</th><th>Model #</th><th>X-Coordinates</th><th>Y-Coordinates</th>
-                    <th> Expiration Date</th>
-                 </thead>
-                <tbody>
-                     {% for item in aeds %}
-                        <tr>
-                            <td>{{item.ident}}</td><td>{{item.acquired}}</td> <td>{{item.facility}}</td> <td>{{item.location}}</td> <td>{{item.brand}}</td>
-                            <td>{{item.aed_model}}</td><td>{{item.aed_model_num}}</td><td>{{item.lng}}</td><td>{{item.lat}}</td><td>{{item.expires}}</td>
-                        </tr>
-                     {% endfor %}
-                </tbody>
-            </table>
-
-                <script type="text/javascript">
-                $(document).ready(function(){
-            ("table#direct_id").DataTable();
-        } );</script>
-        </body>
+        <table id="direct_id" table border ="1" class ="direct_id">
+            <thead>
+                <th><a href="../get_id">id</a></th><th>Date Acquired</th><th><a href="../by_facility">Facility</a></th>
+                <th>Location</th><th>Brand</th><th>Model</th><th>Model #</th><th>X-Coordinates</th><th>Y-Coordinates</th>
+                <th> Expiration Date</th><th>Replaced</th><th>Address</th>
+             </thead>
+            <tbody>
+                 {% for item in aeds %}
+                    <tr>
+                        <td>{{ item[0] }}</td> <td>{{ item[1] }}</td> <td>{{ item[2] }}</td> <td>{{ item[3] }}</td><td>{{ item[4] }}</td><td>{{ item[5] }}</td><td>{{ item[6] }}</td><td>{{ item[7] }}</td><td>{{ item[8] }}</td><td>{{ item[9] }}</td><td>{{ item[10] }}</td> <td>{{ item[11] }}</td>
+                    </tr>
+                 {% endfor %}
+            </tbody>
+        </table>
+    </body>
 </html>
