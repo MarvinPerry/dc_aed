@@ -10,13 +10,17 @@ reverse geocode those coordinates to standard addresses and stores that info in 
 access the aed info.
 
 
-
 ## Required to run:
-Postgresql
-Psycopg (`pip install psycopg2`)
-PROJ4 (`pip install pyproj`)
-pw.py (contains the user supplied Google Maps dev key and postgres db password)
+* Postgresql
+* Psycopg (`pip install psycopg2`)
+* PROJ4 (`pip install pyproj`)
+* pw.py (contains the user supplied Google Maps dev key and postgres db password)
 
+## CDN Resources required: 
+* http://esri.github.io/esri-leaflet/download/ (esri leaflet support)
+* http://leafletjs.com/download.html (leaflet support)
+* https://developers.google.com/speed/libraries/#jquery (jquery) 
+* https://cdn.datatables.net/ (datatables)
 
 ## Project can be downloaded from:
 https://github.com/MarvinPerry/dc_aed
@@ -34,18 +38,15 @@ https://github.com/MarvinPerry/dc_aed
 * by_date.html
 * by_facility.html
 * get_id.html
-*	index.html
+* index.html
 * multi.html
-aed.py
-harvester.py
-pw.py
-License.txt
+* aed.py
+* harvester.py
+* pw.py
+* License.txt
 
-Run harvester.py to get Washington’s current AED information from the Washington D.C. open data site(link this) and store it in your database.Running harvester.py will take some time to handle api calls and reverse geocoding, but after the first time, it only ever needs to be run as often as the registered AED data is updated, which is not very often.
+Run harvester.py to get Washington’s current AED information from the Washington D.C. open data site and store it in your database. Running harvester.py will take some time to handle api calls and reverse geocoding, but after the first time, it only ever needs to be run as often as the registered AED data is updated, which is not very often.
 
-When harvester.py has has finished. Run aed.py to begin the Flask app and in your web browser, open http://127.0.0.1:5000/ to use the project.
+When harvester.py has has finished. Run aed.py to begin the Flask app and in your web browser open http://127.0.0.1:5000/ to access the project.
 
-Licensing information: READ LICENSE (link this)
-
-
-
+Licensing information: Released under MIT License (see License.txt)

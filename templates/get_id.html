@@ -16,8 +16,6 @@
 </head>
 
 
-
-
 <h2><center>Automatic External Defibrilators in Washington, D.C. </center></h2>
 
             <ul>
@@ -44,26 +42,24 @@
     {% else %}
         <form method ="POST" action="/get_id/">
         <label>id: </label> <input name="num" type = "number" />
+        <input type = "checkbox" name ="mapResults" value =True>map results(optional)<br><br>
         <input type ="submit"  input value ="Find"/>
         </form>
-    <br>
-    <br>
     {% endif %}
 
 </table>
 <br>
 <br>
     
-    <div id="map" style="height: 300px;"></div>
+    <div id="map" style="height: 500px;"></div>
     
-    {% if usrAed %}
-    {{ usrAed[0][8] }} {{ usrAed[0][7] }}
+    {% if mapResults %}
 
-    <script>
-    var map = L.map("map").setView([ {{ usrAed[0][8] }}, {{ usrAed[0][7] }}], 13);
-    L.esri.basemapLayer("Streets").addTo(map);
-
-    </script>
+        <script>
+            var map = L.map("map").setView([ {{ usrAed[0][8] }}, {{ usrAed[0][7] }}], 12);
+            var item = L.marker([ {{ usrAed[0][8] }}, {{ usrAed[0][7] }}]).addTo(map).bindPopup("<strong>{{usrAed[0][2]}}</strong>, {{usrAed[0][11]}}"); //adds marker to map
+            L.esri.basemapLayer("Streets").addTo(map);
+        </script>
 
     {% endif %}
 

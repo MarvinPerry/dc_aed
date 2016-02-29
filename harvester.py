@@ -4,7 +4,6 @@ import psycopg2
 from time import strftime
 from datetime import datetime
 from flask import Flask, render_template, request
-from flask.ext.sqlalchemy import SQLAlchemy
 from pyproj import Proj, transform
 from pw import dbpass, googMapKey
 import pdb
@@ -18,15 +17,11 @@ inCoordSys = Proj(init='epsg:3857')
 outCoordSys = Proj(init='epsg:4326')
 
 
-
-
-
-
 # ident is the first item in the AED dataset 
 ident = 1
 
 #a variable representing the url pointing to the dataset, beginning with the first item
-aedObj = 'http://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Health_WebMercator/MapServer/9/'+str(ident)+'?f=pjson'
+aedObj = 'http://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Health_WebMercator/MapServer/9/query?where=1%3D1&text=&objectIds='+str(ident)+'&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&returnTrueCurves=false&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&resultOffset=&resultRecordCount=&f=pjson'
 aed = json.load(urllib2.urlopen(aedObj))
 
 #empty dictionary to hold the table data
@@ -50,7 +45,7 @@ cur = conn.cursor()
 # 	pass
 
 
-while ident != 0: #consider making this none/null instead of zero
+while ident != 0: #couunter to keep track of the number of aeds
 	aedObj = 'http://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Health_WebMercator/MapServer/9/query?where=1%3D1&text=&objectIds='+str(ident)+'&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&returnTrueCurves=false&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&resultOffset=&resultRecordCount=&f=pjson'
 	aed = json.load(urllib2.urlopen(aedObj))
 
@@ -76,7 +71,7 @@ while ident != 0: #consider making this none/null instead of zero
 		# if there is location data in the X coordinate field, convert it to proper lat and lng
 		if aed['features'][0]['geometry']['x']:
 			try:
-				#transform is a function in PyProj that accepts coordinates in one format and converths them to another format
+				#transform is a function in PyProj that accepts coordinates in one format and converts them to another format
 				colm['Lng'],colm['Lat'] = transform (inCoordSys, outCoordSys, aed['features'][0]['geometry']['x'], aed['features'][0]['geometry']['y'])
 				
 				#this block of code reverse geocodes the lat and long coordinates and returns an address

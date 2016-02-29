@@ -14,6 +14,13 @@
             $('#direct_id').DataTable();
         });
         </script>
+
+        <!-- adds leaflet.js map support -->
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css" />
+        <script src="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.js"></script>
+
+        <!-- Load Esri Leaflet from CDN -->
+        <script src="//cdn.jsdelivr.net/leaflet.esri/2.0.0-beta.7/esri-leaflet.js"></script>
     </head>
 
         <ul>
@@ -35,24 +42,47 @@
 
         <form method ="POST" action="/multi/">
             <label>Enter the # of AED records to show: </label> <input name="num" type = "number" />
+            <input type = "checkbox" name ="mapResults" value =True>map results(optional)<br><br>
             <input type ="submit"  input value ="Find"/>
         </form>
     <br>
     <br>
+        {% if usrAed %}
 
-        <table  id="direct_id" border="1" class ="direct_id">
-            <thead>
-                <th><a href="../get_id">id</a></th> <th><a href="../by_date">Acquired</a></th><th><a href="../by_facility">Facility</a></th><th>Location</th><th>Brand</th><th>Model</th><th>Model #</th><th>Lng</th><th>Lat</th><th>Expiration Date</th><th>Replaced</th><th>Address</th>
-            </thead>
+            <table  id="direct_id" border="1" class ="direct_id">
+                <thead>
+                    <th><a href="../get_id">id</a></th> <th><a href="../by_date">Acquired</a></th><th><a href="../by_facility">Facility</a></th><th>Location</th><th>Brand</th><th>Model</th><th>Model #</th><th>Lng</th><th>Lat</th><th>Expiration Date</th><th>Replaced</th><th>Address</th>
+                </thead>
 
-            <tbody>
+                <tbody>
+                    {% for item in usrAed %}
+                        <tr>
+                            <td>{{ item[0] }}</td> <td>{{ item[1] }}</td> <td>{{ item[2] }}</td> <td>{{ item[3] }}</td><td>{{ item[4] }}</td><td>{{ item[5] }}</td><td>{{ item[6] }}</td><td>{{ item[7] }}</td><td>{{ item[8] }}</td><td>{{ item[9] }}</td><td>{{ item[10] }}</td> <td>{{ item[11] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% if mapResults %}
+                <div id="map" style="height: 500px;"></div>
+                {{ mapResults }}
                 {% for item in usrAed %}
-                    <tr>
-                        <td>{{ item[0] }}</td> <td>{{ item[1] }}</td> <td>{{ item[2] }}</td> <td>{{ item[3] }}</td><td>{{ item[4] }}</td><td>{{ item[5] }}</td><td>{{ item[6] }}</td><td>{{ item[7] }}</td><td>{{ item[8] }}</td><td>{{ item[9] }}</td><td>{{ item[10] }}</td> <td>{{ item[11] }}</td>
-                    </tr>
+                    
+                    <script>
+
+                        var map = L.map("map").setView([ {{ item[8] }}, {{ item[7] }}], 12);
+                        L.esri.basemapLayer("Streets").addTo(map);
+
+                            {% for item in usrAed %}
+                                var item = L.marker([ {{ item[8] }}, {{ item[7] }}]).addTo(map).bindPopup("<strong>{{item[2]}}</strong>, {{item[11]}}"); //adds marker to map
+                            {% endfor %}
+                        
+                    </script>
                 {% endfor %}
-            </tbody>
-        </table>
+            
+            {% endif %}
+
+        {% endif %}
 
     </body>
 

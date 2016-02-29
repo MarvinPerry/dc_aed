@@ -1,8 +1,6 @@
 from flask import Flask, render_template, request
-# from flask.ext.sqlalchemy import SQLAlchemy #decided to use raw SQL queries for this project instead of SQL Alchemy
-from sqlalchemy import create_engine
 import psycopg2
-from pw import ALC, dbpass, googMapKey
+from pw import dbpass, googMapKey
 import datetime
 import pdb
 
@@ -22,40 +20,15 @@ cur = conn.cursor()
 
 aed = Flask(__name__)
 
-#setting up the database
-# aed.config['SQLALCHEMY_DATABASE_URI'] = ALC #decided to use raw SQL queries for this project instead of SQL Alchemy
-
-
-# an instance of the database to interact with
-# db = SQLAlchemy(aed) #decided to use raw SQL queries for this project
-
-
-#setting up the database model where each field in the table must be represented 
-
-# class Defibs(db.Model): #decided to use raw SQL queries for this project instead of SQL Alchemy
-#     __tablename__= "defibs"
-#     ident = db.Column(db.Integer, primary_key=True, nullable=False)
-#     acquired = db.Column(db.BigInteger)
-#     facility = db.Column(db.Text, nullable=False)
-#     location = db.Column(db.Text)
-#     brand = db.Column(db.Text)
-#     aed_model = db.Column(db.Text)
-#     aed_model_num = db.Column(db.Text)
-#     lng = db.Column(db.Numeric)
-#     lat = db.Column(db.Numeric)
-#     expires = db.Column(db.Text)
-#     replaced = db.Column(db.Text)
-
 # index page that currently shows a record of every AED in the table
 @aed.route('/')
 def index():
-    # aeds = Defibs.query.all()
 
     SQL = "SELECT * FROM defibs"
     cur.execute(SQL)
     aeds = cur.fetchall() 
     
-    return render_template('index.html', aeds = aeds)
+    return render_template('index.html', aeds=aeds)
 #################################################################################################
 
 
@@ -65,22 +38,25 @@ def get_id():
 
     if request.method == 'GET':
         
-        print "testing here 0"
         return render_template('get_id.html')
 
     elif request.method == 'POST' and request.form['num'].isdigit() == True: 
         data = (request.form['num'],)
-        print "here 1"
+
+        try:
+            mapResults = request.form['mapResults']
+        except:
+            mapResults = False
+
 
         SQL = "SELECT * FROM defibs WHERE ident =(%s)"   
         cur.execute(SQL, data)
         usrAed = cur.fetchall()
         
-        # passing in num and usrAed to the singular aed page
-        return render_template('get_id.html', usrAed=usrAed)
+        # passing in num and usrAed to the page
+        return render_template('get_id.html', usrAed=usrAed, mapResults=mapResults)
 
     else:
-        print "testing here 2"
         return render_template('get_id.html')
 
         
@@ -100,28 +76,30 @@ def by_facility():
         if request.form['facilNameTypd'] != "":
             
             try:
-                print request.form['facilNameTypd']
-                # cur.execute("SELECT DISTINCT facility FROM defibs ORDER BY facility")
-                # distFacil = cur.fetchall()
                 usrInput = request.form['facilNameTypd']
                 soloFacil = ('%'+ usrInput + '%')
                 data = (soloFacil,) #puts the facility returned from the form in a tuple named data
 
                 #assigns the SQL command to a variable named SQL with a variable placeholder in the form of %s
-                #which is then all passed into cur.execute and run, with the results being saved as usrFacil
+                #which is then all passed into cur.execute and run, with the results being assigned to usrFacil
             
                 SQL = "SELECT * FROM defibs WHERE facility::text ILIKE (%s)"   
                 cur.execute(SQL, data)
                 usrFacil = cur.fetchall()
                 count = len(usrFacil)
-                return render_template('by_facility.html', soloFacil=soloFacil, usrFacil=usrFacil, count=count, usrInput=usrInput)
+
+                try:
+                    mapResults = request.form['mapResults']
+                except:
+                    mapResults = False
+
+                return render_template('by_facility.html', soloFacil=soloFacil, usrFacil=usrFacil, count=count, usrInput=usrInput, mapResults=mapResults)
             
             except Exception as E:
                 print str(E)
 
             
         elif request.form['facilNameTypd'] == "":
-            print "got here 3"
             facilNameTypd = request.form['facilNameTypd']
             return render_template('by_facility.html', facilNameTypd=facilNameTypd)
 
@@ -137,15 +115,15 @@ def by_facility():
 def multi():
     if request.method == 'GET':
         count = None
-        try:
-            print request.form['Facility']
-        except:
-            pass
         return render_template('multi.html', count=count)
 
 
     if request.method == 'POST':
         count = 0
+        try:
+            mapResults = request.form['mapResults']
+        except:
+            mapResults = False
 
         SQL = "SELECT * FROM defibs WHERE ident <=(%s) "
 
@@ -154,7 +132,7 @@ def multi():
             cur.execute(SQL, data)
             usrAed = cur.fetchall()
             count = len(usrAed)
-            return render_template('multi.html', usrAed=usrAed, data=data, count=count)
+            return render_template('multi.html', usrAed=usrAed, data=data, count=count, mapResults=mapResults)
         elif str(request.form['num']).isdigit() != True:
             return render_template('multi.html', count=count)
 
@@ -173,7 +151,6 @@ def by_date():
 
     if request.method=='POST':
         if request.form['endYr'] != "" and request.form['startYr'] != "":
-            print request.form['endYr'], request.form['startYr']
 
             startYr = (request.form['startYr'].split("-"))
             endYr = (request.form['endYr'].split("-")) 
@@ -181,13 +158,17 @@ def by_date():
             #converts the user entered years from the form to python date objects
             startYr = datetime.date(int(startYr[0]),int(startYr[1]),int(startYr[2]))
             endYr = datetime.date(int(endYr[0]),int(endYr[1]),int(endYr[2]))
+            try:
+                mapResults = request.form['mapResults']
+            except:
+                mapResults = False
                 
             SQL = "SELECT * from defibs WHERE acquired BETWEEN %s and %s"
             dates = (startYr, endYr)
 
             cur.execute(SQL,dates)
             rangAed = cur.fetchall()
-            return render_template('by_date.html', rangAed=rangAed, startYr=startYr, endYr=endYr)
+            return render_template('by_date.html', rangAed=rangAed, startYr=startYr, endYr=endYr, mapResults=mapResults)
         else:
             return render_template('by_date.html')
 

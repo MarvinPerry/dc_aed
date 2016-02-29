@@ -12,6 +12,13 @@
                 $('#direct_id').DataTable();
             });
             </script>
+
+            <!-- adds leaflet.js map support -->
+            <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css" />
+            <script src="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.js"></script>
+
+            <!-- Load Esri Leaflet from CDN -->
+            <script src="//cdn.jsdelivr.net/leaflet.esri/2.0.0-beta.7/esri-leaflet.js"></script>
         
         </head>
 
@@ -29,6 +36,7 @@
         <!-- form to allow user to enter a facility name by entering text  -->
         <form method = "POST" action="">
         <label>Facility: </label> <input name="facilNameTypd" type ="text"/>
+        <input type = "checkbox" name ="mapResults" value =True>map results(optional)<br><br>
         <input type ="submit"  input value ="Find"/>
         </form>
         <br>
@@ -40,7 +48,7 @@
         {% if usrFacil %}
             
 
-         <table  id="direct_id" border="1" class ="direct_id">
+        <table  id="direct_id" border="1" class ="direct_id">
             <thead>
                 <th><a href="../get_id">id</a></th> <th>Acquired</th><th><a href="../by_facility">Facility</a></th><th>Location</th><th>Brand</th><th>Model</th><th>Model #</th><th>Lng</th><th>Lat</th><th>Expiration Date</th><th>Replaced</th><th>Address</th>
             </thead>
@@ -50,6 +58,7 @@
                         <tr>
                             <td>{{ item[0] }}</td> <td>{{ item[1] }}</td> <td>{{ item[2] }}</td> <td>{{ item[3] }}</td><td>{{ item[4] }}</td><td>{{ item[5] }}</td><td>{{ item[6] }}</td><td>{{ item[7] }}</td><td>{{ item[8] }}</td><td>{{ item[9] }}</td><td>{{ item[10] }}</td><td>{{ item[11] }}</td>
                         </tr>
+
                     {% endfor %}
                 </tbody>
 
@@ -59,11 +68,33 @@
                     {% else %}
                         Here are the <strong>{{ count }}</strong> AEDs found with the name <strong>{{ usrInput }}</strong>
                     {% endif %}
-                    <br>
-                    <br> 
-
-        {% endif %}
+                    
         </table>
+        <br>
+        <br>
+        <br>
+
+            {% if mapResults %}
+                <div id="map" style="height: 500px;"></div>
+                
+                {% for item in usrFacil %}
+                    
+                    <script>
+
+                        var map = L.map("map").setView([ {{ item[8] }}, {{ item[7] }}], 12);
+                        L.esri.basemapLayer("Streets").addTo(map);
+
+                            {% for item in usrFacil %}
+                                var item = L.marker([ {{ item[8] }}, {{ item[7] }}]).addTo(map).bindPopup("<strong>{{item[2]}}</strong>, {{item[11]}}"); //adds marker to map
+                            {% endfor %}
+                        
+                    </script>
+                {% endfor %}
+            {% endif %}
+            
+        {% endif %}
+        
+        
 
     </body>
 </html>
