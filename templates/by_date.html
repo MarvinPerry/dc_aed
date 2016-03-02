@@ -61,13 +61,12 @@
 
         {% if mapResults %}
             <div id="map" style="height: 500px;"></div>
-            {{ mapResults }}
             {% for item in rangAed %}
                 
                 <script>
 
                     var map = L.map("map").setView([ {{ item[8] }}, {{ item[7] }}], 12);
-       `             L.esri.basemapLayer("Streets").addTo(map);
+                    L.esri.basemapLayer("Streets").addTo(map);
 
                         {% for item in rangAed %}
                             var item = L.marker([ {{ item[8] }}, {{ item[7] }}]).addTo(map).bindPopup("<strong>{{item[2]}}</strong>, {{item[11]}}"); //adds marker to map

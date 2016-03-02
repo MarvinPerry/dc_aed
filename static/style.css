@@ -32,3 +32,12 @@ tr:nth-child(even) {
 tr:hover{
     background-color: #ffff99;
 }
+
+.hidden{
+    display: none;
+}
+
+#field{
+
+    display: block;
+}
