@@ -186,7 +186,7 @@ def search():
 
     if request.method == 'POST':
 
-        if request.form['rbut'] == "ident":
+        if request.form['rbut'] == "ident" and request.form['field'] != "":
 
             data = (request.form['field'],)
             try:
@@ -226,39 +226,35 @@ def search():
                 rangAed = cur.fetchall()
                 return render_template('by_date.html', rangAed=rangAed, startYr=startYr, endYr=endYr, mapResults=mapResults)
             else:
-                print "here 5"
                 return render_template('search.html')
-
-        else:
-            print "here 6"
-            return render_template('search.html')
 
         
 
-        if request.form['rbut'] == "facility" and request.form['field'] != None:
-            
-            try:
-                usrInput = request.form['field']
-                soloFacil = ('%'+ usrInput + '%')
-                data = (soloFacil,) #puts the facility returned from the form in a tuple named data
+        if request.form['rbut'] == "facility" and request.form['field'] != "":
 
-                #assigns the SQL command to a variable named SQL with a variable placeholder in the form of %s
-                #which is then all passed into cur.execute and run, with the results being assigned to usrFacil
-            
-                SQL = "SELECT * FROM defibs WHERE facility::text ILIKE (%s)"   
-                cur.execute(SQL, data)
-                usrFacil = cur.fetchall()
-                count = len(usrFacil)
 
                 try:
-                    mapResults = request.form['mapResults']
-                except:
-                    mapResults = False
+                    usrInput = request.form['field']
+                    soloFacil = ('%'+ usrInput + '%')
+                    data = (soloFacil,) #puts the facility returned from the form in a tuple named data
 
-                return render_template('by_facility.html', soloFacil=soloFacil, usrFacil=usrFacil, count=count, usrInput=usrInput, mapResults=mapResults)
-            
-            except:
-                return render_template('search.html')
+                    #assigns the SQL command to a variable named SQL with a variable placeholder in the form of %s
+                    #which is then all passed into cur.execute and run, with the results being assigned to usrFacil
+                
+                    SQL = "SELECT * FROM defibs WHERE facility::text ILIKE (%s)"   
+                    cur.execute(SQL, data)
+                    usrFacil = cur.fetchall()
+                    count = len(usrFacil)
+
+                    try:
+                        mapResults = request.form['mapResults']
+                    except:
+                        mapResults = False
+
+                    return render_template('by_facility.html', soloFacil=soloFacil, usrFacil=usrFacil, count=count, usrInput=usrInput, mapResults=mapResults)
+                
+                except:
+                    return render_template('search.html')
 
         else:
             return render_template('search.html')
