@@ -34,12 +34,10 @@ https://github.com/MarvinPerry/dc_aed
 
 * ./static
 * style.css
+* defib2.jpg
 * ./templates
-* by_date.html
-* by_facility.html
-* get_id.html
 * index.html
-* multi.html
+* search.html
 * aed.py
 * harvester.py
 * pw.py
