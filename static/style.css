@@ -1,3 +1,28 @@
+
+html{
+  margin-left: 100px;
+  margin-right: 200px;
+  margin-bottom: 50px;
+  background-color: lightgray;
+}
+
+.header{
+  background-color: darkgray;
+  text-align: center;
+  height: 20em;
+  width: auto;
+
+}
+.header img{
+  background-size: contain;
+  background-position: center;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  display:block;
+}
+
+
 body{
     width: 85%;
     padding: 25px;
@@ -8,36 +33,56 @@ body{
 .direct_id{
 
     border-collapse: collapse;
-    width: 100%;
-
+    max-width: 100%;
 }
+
+
 
 th{
-    text-align: left;
     background-color:  royalblue;
     color: white;
-
 }
 
+
+/* sets the table headers and data in fields aligned to the left*/
 th, td{
     padding: 5px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
 }
 
-tr:nth-child(even) {
-    background-color: #f2f2f2;
+#myForm{
+  /*margin: 5px;*/
+  margin-right: 75%;
+  font-family: Tahoma, Geneva, sans-serif;
+  font-size: 13px;
+  line-height: 24px;
+  font-weight: bold;
+  color: black;
+  background-color: lightyellow;
 }
 
+
+fieldset{
+  display: block;
+  border: 2px solid;
+}
+
+
+
+/*tr:nth-child(even) {
+    background-color: #ffff99;
+}*/
+
+
+/*
 tr:hover{
     background-color: #ffff99;
 }
+*/
 
-.hidden{
-    display: none;
-}
 
-#field{
+
+/*#field{
 
     display: block;
-}
+}*/

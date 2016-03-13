@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <title>DC AED search</title>
+    <!-- <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css"> -->
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <meta charset="utf-8"/>
+
+   	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+    <!-- adds leaflet.js map support -->
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.js"></script>
+
+    <!-- Load Esri Leaflet from CDN -->
+  	<script src="//cdn.jsdelivr.net/leaflet.esri/2.0.0-beta.7/esri-leaflet.js"></script>
+
+  	
+
+  	
+  	<script type ="text/javascript">
+  		function showHide(){
+  			 var checkbox = document.getElementById("date");
+  			 var hiddeninputs = document.getElementsByClassName("hidden");
+  			 var searchFld = document.getElementById("field");
+
+			for (var i = 0; i != hiddeninputs.length; i++){
+				if (checkbox.checked){
+					console.log("here")
+					hiddeninputs[i].style.display = "block";
+					searchFld.style.display = "none"; 
+
+				}
+
+				else{
+					console.log("here 2")
+					hiddeninputs[i].style.display = "none";
+					searchFld.style.display = "block";
+				}
+
+
+			}
+  		}
+
+  	</script>
+
+  	<script>
+  	function myFunction(){
+
+  		document.getElementById("myForm").reset();
+
+  		var searchFld = document.getElementById("field");
+  		var dateField = document.getElementsByClassName("hidden");
+  		var x;
+  		searchFld.style.display ="block";
+
+  		for (x=0; x < dateField.length; x++){
+  			dateField[x].style.display ="none";
+ 			}
+
+  		}
+
+
+  	</script>
+
+</head>
+
+<body>
+
+	<form method ="POST" action ="/search/" id="myForm" class = "">
+		<fieldset>
+			<input type="radio" name="rbut" value="ident" id="ident" checked onclick="showHide()"/>
+			<label for="ident">id</label>
+			<br>
+			<input type="radio" name="rbut" value="facility" id="facility" onclick="showHide()">
+			<label for="facility">facility</label>
+			<br>
+			<input type="radio" name="rbut" value="date" id="date" onclick="showHide()"/>
+			<label for="date">date</label>
+			<br>
+			<br>
+			<div id ="field">
+			<label for="field">search: </label><input type ="text" name="field"/><br><br>
+			
+			</div>
+			
+			<label for="strtButton" class ="hidden" style="display: none;">Start year:</label><input type="date" name=startYr id ="strtButton" class ="hidden" style="display: none;">
+
+			<label for="endButton" class ="hidden" style="display: none;">End year:</label><input type="date" name=endYr id ="endButton" class ="hidden" style="display: none;">
+
+			<input type = "checkbox" name ="mapResults" id="mapResults" value =True>
+			<label for="mapResults">Map results</label><span style="font-size:9px"> optional</span>
+			<br>
+			<input type ="submit" value="Search"><input type="button" onclick="myFunction()" value="Reset">
+		</fieldset>
+
+	</form>
+
+
+</body>
+
+</html>
+
+

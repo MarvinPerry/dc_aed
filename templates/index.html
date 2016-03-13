@@ -7,27 +7,149 @@
          <!-- links to required jquery and Datatables CDN resources -->
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css">
+        
+        <title>AEDs in Washington, D.C.</title>
+
         <script type="text/javascript" src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript">
         $(document).ready(function(){
-            $('#direct_id').DataTable();
+            $('#direct_id').DataTable({
+                "oLanguage": { //renames table search function to refine search to limit confusion
+                    "sSearch": "refine search: "
+                },
+                    //disables sorting on specific columns
+                "columnDefs": [{
+                    "targets": [3,7,8,11],
+                    "orderable": false
+                }]
+            });
         });
         </script>
-    
-    </head>
 
-    <body>
-        <h2><center>Automatic External Defibrilators in Washington, D.C. </center></h2>
-        
-        <ul>
+    <script type ="text/javascript">
+        function showHide(){
+             var dateCheckbox = document.getElementById("date");
+             var hiddeninputs = document.getElementsByClassName("hidden");
+             var searchFld = document.getElementById("field");
 
-            <li><a href="get_id">search by id</a></li>
-            <li><a href="multi">search for multiple AED's</a></li> 
-            <li><a href="by_facility">search by facility</a></li>
-            <li><a href="by_date"> search by date range</a>(coming soon)</li>
+            for (var i = 0; i != hiddeninputs.length; i++){
+                if (dateCheckbox.checked){
+                    console.log("here")
+                    hiddeninputs[i].style.display = "block";
+                    searchFld.style.display = "none"; 
+
+                }
+
+                else{
+                    console.log("here 2")
+                    hiddeninputs[i].style.display = "none";
+                    searchFld.style.display = "block";
+                }
+
+            }
+        }
+
+    </script>
+
+    <script>
+    function myFunction(){
+
+        document.getElementById("myForm").reset();
+
+        var searchFld = document.getElementById("field");
+        var dateField = document.getElementsByClassName("hidden");
+        var x;
+        searchFld.style.display ="block";
+        field2.type = "number";
+
+
+        for (x=0; x < dateField.length; x++){
+            dateField[x].style.display ="none";
+            }
+
+        }
+
+    </script>
+
+            <!-- a script that hides or shows the table as a user needs -->
+    <script>
+        function hideTable(){
+            var table = document.getElementById("wholetable");
+
+            if (table.style.display == "block"){
+                console.log("hiding it")
+
+                table.style.display = "none";
+
+            }else if (table.style.display == "none"){
+                console.log("showing it")   
+                table.style.display = "block";
+            }
+        }
+
+    </script>
+
+
+    <script>
+        function inputNum(){
+            var inputType = document.getElementsByClassName("radio")
+
+            if (inputType.ident.checked){
+                console.log("numbers only")
+                field2.type = "number";
             
-        </ul>
+            }if (inputType.facility.checked){
+                console.log("text allowed")
+                field2.type ="text";
+            }
+        }
+    </script>
 
+
+    <div class ="header">
+    <a href=>
+        <img src="../static/defib2.jpg" alt="debrillator logo" id="head_img"></a>
+    </div>
+    <h2><center>Automatic External Defibrilators in Washington, D.C. </center></h2>
+</head>
+
+<body>        
+    <ul>
+        <li><label for  ="wholetable" onclick="hideTable()">Toggle table</label></li><br><br>
+    </ul>
+    
+
+    <form method ="POST" action ="/search/" id="myForm" class = "">
+        <fieldset>
+            <input type="radio" name="rbut" value="ident" id="ident" class="radio" checked onclick="showHide(), inputNum()"/>
+            <label for="ident">id</label>
+            <br>
+            <input type="radio" name="rbut" value="facility" id="facility" class="radio" onclick="showHide(), inputNum()"/>
+            <label for="facility">facility</label>
+            <br>
+            <input type="radio" name="rbut" value="date" id="date" onclick="showHide()"/>
+            <label for="date">date</label>
+            <br>
+            <br>
+            <div id ="field">
+            <label for="field">search: </label><input type ="number" id="field2" name="field"/><br><br>
+            
+            </div>
+            
+            <label for="strtButton" class ="hidden" style="display: none;">Start year:</label><input type="date" name=startYr id ="strtButton" class ="hidden" style="display: none;">
+
+            <label for="endButton" class ="hidden" style="display: none;">End year:</label><input type="date" name=endYr id ="endButton" class ="hidden" style="display: none;">
+
+            <input type = "checkbox" name ="mapResults" id="mapResults" value =True>
+            <label for="mapResults">Map results</label><span style="font-size:9px"> optional</span>
+            <br>
+            <input type ="submit" value="Search"><input type="button" onclick="myFunction()" value="Reset">
+        </fieldset>
+
+    </form>
+        
+
+        <div id = wholetable style="display: none;" class ="direct_id hover datatable">
         <table id="direct_id" table border ="1" class ="direct_id hover datatable">
             <thead>
                 <th><a href="../get_id">id</a></th><th>Date Acquired</th><th><a href="../by_facility">Facility</a></th>
@@ -42,5 +164,8 @@
                  {% endfor %}
             </tbody>
         </table>
+        </div>
+
+
     </body>
 </html>
