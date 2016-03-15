@@ -29,7 +29,7 @@ colm ={}
 
 #tries to create the connection to the database, and prints failure message if necessarry
 try:
-    conn = psycopg2.connect(database=AED, user=postgres, password=dbpass, host=host, port='5432')
+    conn = psycopg2.connect(database=AED, user=postgres, password=dbpass, host=host, port=port)
     
 except:
     print "Database connection failed."

@@ -128,7 +128,7 @@ def search():
 
 
 if __name__== "__main__":
-    aed.debug = True
+    # aed.debug = True
     aed.run()
 
 
