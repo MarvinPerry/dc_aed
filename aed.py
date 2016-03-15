@@ -4,7 +4,7 @@ from pw import dbpass, googMapKey
 import datetime
 import pdb
 
-#### Begining trace here #####
+#### Begining trace here ####
 # pdb.set_trace()
 
 ####################################################################################################
