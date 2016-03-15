@@ -5,7 +5,7 @@ from time import strftime
 from datetime import datetime
 from flask import Flask, render_template, request
 from pyproj import Proj, transform
-from pw import dbpass, googMapKey
+from pw import *
 import pdb
 
 #### Begining trace here ####
@@ -29,7 +29,7 @@ colm ={}
 
 #tries to create the connection to the database, and prints failure message if necessarry
 try:
-    conn = psycopg2.connect(database='AED', user='postgres', password=dbpass, host='127.0.0.1', port='5432')
+    conn = psycopg2.connect(database=AED, user=postgres, password=dbpass, host=host, port='5432')
     
 except:
     print "Database connection failed."
