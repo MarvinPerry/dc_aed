@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 import psycopg2
-from pw import dbpass, googMapKey
+from pw import *
 import datetime
 import pdb
 
@@ -10,7 +10,7 @@ import pdb
 ####################################################################################################
 #tries to create the connection to the database, and prints failure message if necessarry
 try:
-    conn = psycopg2.connect(database='AED', user='postgres', password=dbpass, host='127.0.0.1', port='5432')
+    conn = psycopg2.connect(database=AED, user=postgres, password=dbpass, host=host, port=port)
     print "Connection successful"
 except:
     print "Database connection failed."
