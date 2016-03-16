@@ -7,7 +7,7 @@ import pdb
 #### Begining trace here ####
 # pdb.set_trace()
 
-####################################################################################################
+###################################################################################################
 #tries to create the connection to the database, and prints failure message if necessarry
 try:
     conn = psycopg2.connect(database=AED, user=postgres, password=dbpass, host=host, port=port)
