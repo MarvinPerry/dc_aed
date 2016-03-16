@@ -1,1 +1,1 @@
-web: gunicorn aed:app
+web: gunicorn aed:aed
