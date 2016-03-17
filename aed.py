@@ -5,7 +5,7 @@ import pdb
 import os
 
 try:
-    import pw.py
+    from pw import *
 except:
     AED = (os.environ['AED'])
     postgres = (os.environ['postgres'])
