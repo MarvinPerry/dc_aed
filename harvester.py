@@ -7,7 +7,7 @@ from flask import Flask, render_template, request
 from pyproj import Proj, transform
 import pdb
 try:
-	from pw import *
+	import pw.py
 except:
 	pass
 

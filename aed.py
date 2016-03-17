@@ -4,7 +4,7 @@ import datetime
 import pdb
 
 try:
-    from pw import *
+    import pw.py
 except:
     pass
 
