@@ -1,22 +1,16 @@
 from flask import Flask, render_template, request
 import psycopg2
-# from pw import *
 import datetime
 import pdb
-import os
-import urlparse
+
+try:
+    from pw import *
+except:
+    pass
+
 
 #### Begining trace here ####
 # pdb.set_trace()
-
-urlparse.uses_netloc.append("postgres")
-url = urlparse.urlparse(os.environ["DATABASE_URL"])
-
-AED = url.path[1:]
-postgres = url.username
-dbpass = url.password
-host = url.hostname
-port = url.port
 
 ###################################################################################################
 #tries to create the connection to the database, and prints failure message if necessarry
