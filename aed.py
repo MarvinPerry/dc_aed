@@ -13,9 +13,6 @@ except:
     host = (os.environ['host'])
     port = (os.environ['port'])
 
-
-
-
 #### Begining trace here ####
 # pdb.set_trace()
 
