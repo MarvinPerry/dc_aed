@@ -76,11 +76,14 @@
             {% endfor %}
         </tbody>
         </table>
+        <br>
+        <br>
+        <br>
 
         {% if mapResults %}
             <div id="map" style="height: 500px;"></div>
             <script>
-                var map = L.map("map").setView([ {{ item[8] }}, {{ item[7] }}], 12);
+                var map = L.map("map").setView([38.9047,-77.0164], 11);
                 L.esri.basemapLayer("Streets").addTo(map);
             </script>
             
