@@ -6,7 +6,13 @@ import pdb
 try:
     import pw.py
 except:
-    pass
+    AED = (os.environ['AED'])
+    postgres = (os.environ['postgres'])
+    dbpass = (os.environ['dbpass'])
+    host = (os.environ['host'])
+    port = (os.environ['port'])
+
+
 
 
 #### Begining trace here ####
