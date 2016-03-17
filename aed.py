@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 import psycopg2
-from pw import *
+# from pw import *
 import datetime
 import pdb
 import os

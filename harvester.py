@@ -5,7 +5,7 @@ from time import strftime
 from datetime import datetime
 from flask import Flask, render_template, request
 from pyproj import Proj, transform
-from pw import *
+# from pw import *
 import pdb
 
 #### Begining trace here ####
