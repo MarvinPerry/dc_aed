@@ -6,20 +6,21 @@ from datetime import datetime
 from flask import Flask, render_template, request
 from pyproj import Proj, transform
 import pdb
+import os
 try:
 	import pw.py
 except:
 	AED = (os.environ['AED'])
-    postgres = (os.environ['postgres'])
-    dbpass = (os.environ['dbpass'])
-    host = (os.environ['host'])
-    port = (os.environ['port'])
+	postgres = (os.environ['postgres'])
+	dbpass = (os.environ['dbpass'])
+	host = (os.environ['host'])
+	port = (os.environ['port'])
 
-#### Begining trace here ####
+### Begining trace here ####
 # pdb.set_trace()
 
 
-# defines the incoming coordinate system as 3857 and the system that he want as 4326 for conversion later
+# defines the incoming coordinate system as 3857 and the system that we want as 4326 for conversion later
 inCoordSys = Proj(init='epsg:3857')
 outCoordSys = Proj(init='epsg:4326')
 
