@@ -12,6 +12,17 @@ import pdb
 # pdb.set_trace()
 
 
+urlparse.uses_netloc.append("postgres")
+url = urlparse.urlparse(os.environ["DATABASE_URL"])
+
+AED = url.path[1:]
+postgres = url.username
+dbpass = url.password
+host = url.hostname
+port = url.port
+
+
+
 # defines the incoming coordinate system as 3857 and the system that he want as 4326 for conversion later
 inCoordSys = Proj(init='epsg:3857')
 outCoordSys = Proj(init='epsg:4326')
