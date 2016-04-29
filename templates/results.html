@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+‹<!DOCTYPE html>
     <html>
         <head>
             <link rel="stylesheet" type="text/css" href="/static/style.css">
@@ -27,8 +27,22 @@
         <link rel="stylesheet" href="https://libraries.cdnhttps.com/ajax/libs/leaflet/1.0.0-beta.2/leaflet.css"/>
         <script src="https://libraries.cdnhttps.com/ajax/libs/leaflet/1.0.0-beta.2/leaflet.js"></script>
 
-            <!-- Load Esri Leaflet from CDN -->
-            <script src="//cdn.jsdelivr.net/leaflet.esri/2.0.0-beta.7/esri-leaflet.js"></script>
+        <!-- Load Esri Leaflet from CDN -->
+        <script src="//cdn.jsdelivr.net/leaflet.esri/2.0.0-beta.7/esri-leaflet.js"></script>
+            
+
+        <script type="text/javascript">
+            funcTest = function() {
+            console.log("This test passed")
+            };
+
+            mapIt = function() {
+        
+            console.log("mapping it")
+            };
+
+            
+        </script>
 
             <title>search results</title>
                     
@@ -43,7 +57,7 @@
         <!-- displayed if user searches by id -->
         {% if usrAed %}
         
-         <table id="direct_id" border="1" class ="direct_id">
+         <table id="direct_id" border="1" class ="direct_id hover datatable">
             <thead>
                 <th><a href="../get_id">id</a></th> <th>Acquired</th><th><a href="../by_facility">Facility</a></th><th>Location</th><th>Brand</th><th>Model</th><th>Model #</th><th>Lng</th><th>Lat</th><th>Expiration Date</th><th>Replaced</th><th>Address</th>
             </thead>
@@ -60,10 +74,6 @@
 
             {% if mapResults %}
                     <div id="map" style="height: 500px;"></div>
-                    <script>
-                        var map = L.map("map").setView([38.9047,-77.0164], 11);
-                        L.esri.basemapLayer("Streets").addTo(map);
-                    </script>
                     
                     {% for item in usrAed %}   
                         <script>
@@ -78,9 +88,6 @@
         
         {% endif %}
 
-
-
-        
         <!-- displayed if user searches by facility -->
         {% if usrFacil %}
         
@@ -92,7 +99,7 @@
             {% endif %}
             <br><br>
 
-        <table id="direct_id" border="1" class ="direct_id">
+        <table id="direct_id" border="1" class ="direct_id hover datatable">
             <thead>
                 <th><a href="../get_id">id</a></th> <th>Acquired</th><th><a href="../by_facility">Facility</a></th><th>Location</th><th>Brand</th><th>Model</th><th>Model #</th><th>Lng</th><th>Lat</th><th>Expiration Date</th><th>Replaced</th><th>Address</th>
             </thead>
@@ -113,17 +120,32 @@
                 <script>
                     var map = L.map("map").setView([38.9047,-77.0164], 11);
                     L.esri.basemapLayer("Streets").addTo(map);
-                </script>
-                
-                {% for item in usrFacil %}   
-                    <script>
 
-                        {% for item in usrFacil %}
-                            var item = L.marker([ {{ item[8] }}, {{ item[7] }}]).addTo(map).bindPopup("<strong>{{item[2]}}</strong>, {{item[11]}}"); //adds marker to map
-                        {% endfor %}
-                        
+                    var campLayerGroup = []; //an empty array to hold markers
+                </script>
+                 <!--for every item in usrFacil add am apprpriate marker on the map  -->
+                
+                <script>testArray = []</script>
+                {% for item in usrFacil %}
+                    
+
+                    <script>
+                        var item = L.marker([ {{ item[8] }}, {{ item[7] }}]).bindPopup("<strong>{{item[2]}}</strong>, {{item[11]}}");
+                        campLayerGroup.push(item); //appends the item to the campLayerGroup array
+                        testArray.push(item)
+                        console.log(testArray)
                     </script>
+                
                 {% endfor %}
+  
+                    <script>
+                         var camps = L.layerGroup(campLayerGroup).addTo(map); //adds the elements from the campLayergroup array to the map and assigns it to 
+                    </script>
+                    
+                    <script>
+                        funcTest();
+                        mapIt();
+                    </script>
             {% endif %}
             
         {% endif %}
@@ -132,7 +154,7 @@
         <!-- displayed if user searches by date -->
         {% if rangeAed %}
 
-         <table id="direct_id" border="1" class ="direct_id">
+         <table id="direct_id" border="1" class ="direct_id hover datatable">
             <thead>
                 <th><a href="../get_id">id</a></th> <th>Acquired</th><th><a href="../by_facility">Facility</a></th><th>Location</th><th>Brand</th><th>Model</th><th>Model #</th><th>Lng</th><th>Lat</th><th>Expiration Date</th><th>Replaced</th><th>Address</th>
             </thead>

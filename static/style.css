@@ -3,7 +3,7 @@ html{
   margin-left: 100px;
   margin-right: 200px;
   margin-bottom: 50px;
-  background-color: lightgray;
+  background-color: #855855;
 }
 
 .header{
@@ -39,7 +39,7 @@ body{
 
 
 th{
-    background-color:  royalblue;
+    background-color:  #7CA9D2;
     color: white;
 }
 
@@ -58,7 +58,7 @@ th, td{
   line-height: 24px;
   font-weight: bold;
   color: black;
-  background-color: lightyellow;
+  background-color: #2C4152;
 }
 
 
